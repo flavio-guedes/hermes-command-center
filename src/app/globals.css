@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #08090b;
+  --foreground: #e6e8ec;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: 'cv11', 'ss01';
+  font-variation-settings: 'opsz' 32;
+}
+
+/* Subtle grid background */
+.command-grid {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* React Flow overrides */
+.react-flow__node {
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.react-flow__edge-path {
+  stroke-width: 1.5;
+}
