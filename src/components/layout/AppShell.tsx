@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 export function AppShell({ nav, topBar, dashboard, main, bottom }: {
   nav?: ReactNode;
@@ -10,27 +10,25 @@ export function AppShell({ nav, topBar, dashboard, main, bottom }: {
   bottom?: ReactNode;
 }) {
   return (
-    <div className="flex h-screen flex-col">
-      <header className="border-b border-command-border bg-command-surface/80 backdrop-blur">
+    <div className="flex h-screen flex-col bg-white text-command-text">
+      <header className="sticky top-0 z-20 border-b border-command-border bg-white/90 backdrop-blur">
         {topBar}
       </header>
       <div className="flex min-h-0 flex-1">
-        <aside className="hidden md:block w-16 border-r border-command-border bg-command-surface/40 p-2">
+        <aside className="hidden md:block w-60 border-r border-command-border bg-white">
           {nav}
         </aside>
         <main className="flex min-h-0 flex-1 flex-col">
-          {dashboard && (
-            <section className="border-b border-command-border bg-command-surface/60 px-4 py-3">
-              {dashboard}
-            </section>
-          )}
-          <section className="flex-1 command-grid p-3">
+          <section className="border-b border-command-border bg-command-surface/70 px-6 py-4">
+            {dashboard}
+          </section>
+          <section className="flex-1 overflow-hidden p-6">
             <div className="h-full overflow-x-auto">
               {main}
             </div>
           </section>
           {bottom && (
-            <section className="border-t border-command-border bg-command-surface/60 px-4 py-3">
+            <section className="border-t border-command-border bg-command-surface/70 px-6 py-4">
               {bottom}
             </section>
           )}

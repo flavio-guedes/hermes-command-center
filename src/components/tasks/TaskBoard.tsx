@@ -6,12 +6,12 @@ import { TaskCard } from './TaskCard';
 import { TaskDetailDrawer } from './TaskDetailDrawer';
 
 const columns = [
-  { id: 'BACKLOG', label: 'BACKLOG' },
-  { id: 'READY', label: 'READY' },
-  { id: 'RUNNING', label: 'RUNNING' },
-  { id: 'WAITING', label: 'WAITING' },
-  { id: 'BLOCKED', label: 'BLOCKED' },
-  { id: 'DONE', label: 'DONE' },
+  { id: 'BACKLOG', label: 'ACÚMULO DE TRABALHO' },
+  { id: 'READY', label: 'PREPARAR' },
+  { id: 'RUNNING', label: 'CORRENDO' },
+  { id: 'WAITING', label: 'ESPERANDO' },
+  { id: 'BLOCKED', label: 'BLOQUEADO' },
+  { id: 'DONE', label: 'FEITO' },
 ];
 
 export function TaskBoard({ tasks, categories }: { tasks: Task[]; categories: Category[] }) {
@@ -31,13 +31,13 @@ export function TaskBoard({ tasks, categories }: { tasks: Task[]; categories: Ca
     <div className="h-full">
       <div className="mb-3 flex items-center justify-between">
         <div>
-          <div className="text-xs font-semibold text-command-text">TASKS</div>
+          <div className="text-xs font-semibold text-command-text tracking-wide">TAREFAS</div>
           <div className="text-[11px] text-command-muted">Kanban by status</div>
         </div>
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="rounded-lg border border-command-border bg-command-elevated px-2 py-1 text-[11px] text-command-text"
+          className="rounded-lg border border-command-border bg-white px-2 py-1 text-[11px] text-command-text"
         >
           <option value="ALL">All categories</option>
           {categories.map((c) => (

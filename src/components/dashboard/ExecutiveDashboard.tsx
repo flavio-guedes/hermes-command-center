@@ -3,15 +3,6 @@
 import { useMemo } from 'react';
 import type { KPIs, ApprovalRequest } from '@/types/events';
 
-function Stat({ label, value, tone }: { label: string; value: string | number; tone?: 'success' | 'warning' | 'danger' }) {
-  return (
-    <div className="rounded-lg border border-command-border bg-command-elevated/60 px-3 py-2">
-      <div className="text-[11px] text-command-muted">{label}</div>
-      <div className={`text-xl font-semibold ${tone === 'danger' ? 'text-command-danger' : tone === 'warning' ? 'text-command-warning' : 'text-command-text'}`}>{value}</div>
-    </div>
-  );
-}
-
 export function ExecutiveDashboard({ kpis, mission, approvals }: { kpis: KPIs; mission: { name: string; status: string; progress: number; governance: string }; approvals: ApprovalRequest[] }) {
   const pendingApprovals = approvals.filter((a) => a.status === 'PENDING').length;
   const stats = useMemo(() => [
@@ -26,12 +17,16 @@ export function ExecutiveDashboard({ kpis, mission, approvals }: { kpis: KPIs; m
   ], [kpis, pendingApprovals]);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-2">
         {stats.map((stat) => (
-          <Stat key={stat.label} label={stat.label} value={stat.value} tone={stat.tone} />
+          <div key={stat.label} className="command-card hud-corner px-4 py-3">
+            <div className="text-[11px] font-medium tracking-wide text-command-muted">{stat.label}</div>
+            <div className={`mt-1 text-2xl font-semibold tracking-tight ${stat.tone === 'danger' ? 'text-command-danger' : stat.tone === 'warning' ? 'text-command-warning' : 'text-command-text'}`}>{stat.value}</div>
+          </div>
         ))}
       </div>
+      <div className="futuristic-line" />
       <div className="flex flex-wrap items-center gap-4 text-[11px] text-command-muted">
         <div>
           <span className="text-command-text">Missão atual:</span> {mission.name}

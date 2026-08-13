@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import type { Task } from '@/types/events';
 
 const statusTone: Record<Task['status'], string> = {
@@ -21,12 +20,10 @@ const priorityTone: Record<Task['priority'], string> = {
 
 export function TaskCard({ task, onClick }: { task: Task; onClick: () => void }) {
   return (
-    <motion.button
-      layout
-      whileHover={{ y: -2 }}
+    <button
       onClick={onClick}
-      className={`w-full rounded-lg border bg-command-elevated/80 p-3 text-left transition ${
-        task.status === 'BLOCKED' ? 'border-command-danger/60 bg-command-danger/5' : 'border-command-border'
+      className={`w-full command-card command-card-hover p-3 text-left ${
+        task.status === 'BLOCKED' ? 'border-command-danger/60 bg-command-danger/5' : ''
       }`}
     >
       <div className="flex items-start justify-between gap-2">
@@ -42,14 +39,14 @@ export function TaskCard({ task, onClick }: { task: Task; onClick: () => void })
       </div>
       <div className="mt-1 text-[10px] text-command-muted">Atualizado há {formatDelta(task.updatedAt)}</div>
       {task.blocker && (
-        <div className="mt-2 rounded-md border border-command-danger/40 bg-command-danger/10 p-2 text-[10px] text-command-danger">
+        <div className="mt-2 rounded-md border border-command-danger/40 bg-command-danger/5 p-2 text-[10px] text-command-danger">
           <div className="font-semibold">STATUS: BLOCKED</div>
           <div className="mt-0.5">MOTIVO: {task.blocker}</div>
           {task.nextAction && <div className="mt-0.5">AÇÃO: {task.nextAction}</div>}
-          <button className="mt-2 rounded-lg border border-command-danger/40 bg-command-danger/20 px-2 py-1 text-[10px]">RESOLVER</button>
+          <button className="mt-2 rounded-lg border border-command-danger/40 bg-white px-2 py-1 text-[10px]">RESOLVER</button>
         </div>
       )}
-    </motion.button>
+    </button>
   );
 }
 
