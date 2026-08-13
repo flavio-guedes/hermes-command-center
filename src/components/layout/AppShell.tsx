@@ -1,13 +1,13 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
 
 export function AppShell({ topBar, left, center, right, bottom }: {
-  topBar?: React.ReactNode;
-  left?: React.ReactNode;
-  center?: React.ReactNode;
-  right?: React.ReactNode;
-  bottom?: React.ReactNode;
+  topBar?: ReactNode;
+  left?: ReactNode;
+  center?: ReactNode;
+  right?: ReactNode;
+  bottom?: ReactNode;
 }) {
   return (
     <div className="flex h-screen flex-col">

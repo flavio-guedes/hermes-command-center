@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+
 import { Tool } from '@/types/events';
 
 export function ToolsPanel({ tools }: { tools: Tool[] }) {

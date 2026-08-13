@@ -13,13 +13,13 @@ const ToolsPanel = dynamic(() => import('@/components/tools/ToolsPanel').then(mo
 const ApprovalPanel = dynamic(() => import('@/components/approval/ApprovalPanel').then(mod => ({ default: mod.ApprovalPanel })), { ssr: false });
 
 export default function Page() {
-  const { events, currentMission, agents, skills, tools, approvals } = useMockStream();
+  const { mission: currentMission, events, agents, skills, tools, approvals } = useMockStream();
 
   return (
     <AppShell
       topBar={<TopBar />}
       left={<AgentsPanel agents={agents} />}
-      center={<ExecutionGraph events={events} currentMission={currentMission} />}
+      center={<ExecutionGraph />}
       right={<MissionView mission={currentMission} />}
       bottom={
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">

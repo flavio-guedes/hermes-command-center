@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { ExecutionEvent, Agent, Skill, Tool, ApprovalRequest, Mission } from '@/types/events';
 
 const initialMission: Mission = {
@@ -80,7 +80,7 @@ export function useMockStream() {
   useEffect(() => {
     const timeouts: number[] = [];
     steps.forEach(step => {
-      const id = window.setTimeout(() => setState(prev => step.apply(prev)), step.afterMs);
+      const id = window.setTimeout(() => setState((prev: State) => step.apply(prev)), step.afterMs);
       timeouts.push(id);
     });
     return () => timeouts.forEach(clearTimeout);

@@ -23,7 +23,7 @@ export function EventStream({ events }: { events: ExecutionEvent[] }) {
         <span className="text-[10px] text-command-muted">{events.length} events</span>
       </div>
       <div className="h-[220px] space-y-2 overflow-y-auto pr-1">
-        {events.map((e, idx) => (
+        {events.map((e) => (
           <motion.div
             initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

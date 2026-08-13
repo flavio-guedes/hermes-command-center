@@ -1,13 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import ReactFlow, {
   Background,
   Controls,
   Edge,
   Node,
   Panel,
-  Position,
   useNodesState,
   useEdgesState,
 } from 'reactflow';
@@ -15,7 +14,6 @@ import 'reactflow/dist/style.css';
 import { motion } from 'framer-motion';
 import { Play, ShieldAlert } from 'lucide-react';
 import { useMockStream } from '@/mock/mockEngine';
-import { Agent } from '@/types/events';
 
 function hexToRgba(hex: string, alpha: number) {
   return hex + Math.round(alpha * 255).toString(16).padStart(2, '0');
@@ -39,8 +37,9 @@ const NODE_ICON: Record<string, string> = {
   governance: '🛡',
 };
 
-function CustomNode({ data }: { data: any }) {
-  const accent = NODE_COLORS[data.type] || '#3b82f6';
+function CustomNode({ data }: { data: Record<string, unknown> }) {
+  const type = String(data.type || '');
+  const accent = NODE_COLORS[type] || '#3b82f6';
   return (
     <motion.div
       animate={{ scale: data.status === 'RUNNING' || data.status === 'REQUIRES_APPROVAL' ? 1.05 : 1 }}
@@ -48,10 +47,10 @@ function CustomNode({ data }: { data: any }) {
       className="min-w-[180px] rounded-xl border border-white/10 bg-command-elevated/90 p-3 shadow-glow"
     >
       <div className="flex items-center gap-2">
-        <span className="text-sm leading-none">{NODE_ICON[data.type] || '○'}</span>
+        <span className="text-sm leading-none">{NODE_ICON[type] || '○'}</span>
         <div>
-          <div className="text-xs font-medium text-command-text">{data.label}</div>
-          <div className="text-[10px] font-mono text-command-muted">{data.role}</div>
+          <div className="text-xs font-medium text-command-text">{String(data.label)}</div>
+          <div className="text-[10px] font-mono text-command-muted">{String(data.role)}</div>
         </div>
       </div>
       <div className="mt-2 flex items-center justify-between">
@@ -63,8 +62,8 @@ function CustomNode({ data }: { data: any }) {
             backgroundColor: `${hexToRgba(accent, 0.08)}`,
           }}
         >
-          <StatusDot status={data.status} />
-          {data.status}
+          <StatusDot status={String(data.status)} />
+          {String(data.status)}
         </span>
       </div>
     </motion.div>
@@ -98,8 +97,8 @@ export function ExecutionGraph() {
   const { agents, events } = useMockStream();
 
   const initialNodes: Node[] = useMemo(() => {
-    const top = agents.find((a) => a.name === 'Hermes') || agents[0];
-    const children = agents.filter((a) => a.name !== 'Hermes');
+    const top = agents.find((item) => item.name === 'Hermes') || agents[0];
+    const children = agents.filter((item) => item.name !== 'Hermes');
     const out: Node[] = [
       {
         id: 'hermes',
@@ -146,7 +145,7 @@ export function ExecutionGraph() {
 
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
-  const nodeTypes = useMemo(() => ({ custom: CustomNode as any }), []);
+  const nodeTypes = useMemo(() => ({ custom: CustomNode  as unknown as any }), []);
 
   return (
     <div className="h-full w-full">
@@ -165,7 +164,7 @@ export function ExecutionGraph() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         fitView
-        nodeTypes={nodeTypes}
+        nodeTypes={nodeTypes as any}
         proOptions={{ hideAttribution: true }}
       >
         <Background color="#1f252e" gap={24} />
