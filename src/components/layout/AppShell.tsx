@@ -2,11 +2,11 @@
 
 import { ReactNode } from 'react';
 
-export function AppShell({ topBar, left, center, right, bottom }: {
+export function AppShell({ nav, topBar, dashboard, main, bottom }: {
+  nav?: ReactNode;
   topBar?: ReactNode;
-  left?: ReactNode;
-  center?: ReactNode;
-  right?: ReactNode;
+  dashboard?: ReactNode;
+  main?: ReactNode;
   bottom?: ReactNode;
 }) {
   return (
@@ -15,25 +15,27 @@ export function AppShell({ topBar, left, center, right, bottom }: {
         {topBar}
       </header>
       <div className="flex min-h-0 flex-1">
-        <aside className="hidden lg:block w-64 border-r border-command-border bg-command-surface/40 p-3">
-          {left}
+        <aside className="hidden md:block w-16 border-r border-command-border bg-command-surface/40 p-2">
+          {nav}
         </aside>
-        <main className="flex-1 command-grid p-3">
-          <div className="grid h-full grid-cols-1 xl:grid-cols-3 gap-3">
-            <div className="xl:col-span-2 min-h-0 rounded-xl border border-command-border bg-command-surface/60 backdrop-blur">
-              {center}
+        <main className="flex min-h-0 flex-1 flex-col">
+          {dashboard && (
+            <section className="border-b border-command-border bg-command-surface/60 px-4 py-3">
+              {dashboard}
+            </section>
+          )}
+          <section className="flex-1 command-grid p-3">
+            <div className="h-full overflow-x-auto">
+              {main}
             </div>
-            <div className="min-h-0 rounded-xl border border-command-border bg-command-surface/60 backdrop-blur">
-              {right}
-            </div>
-          </div>
+          </section>
+          {bottom && (
+            <section className="border-t border-command-border bg-command-surface/60 px-4 py-3">
+              {bottom}
+            </section>
+          )}
         </main>
       </div>
-      {bottom && (
-        <section className="border-t border-command-border bg-command-surface/60 backdrop-blur p-3">
-          {bottom}
-        </section>
-      )}
     </div>
   );
 }

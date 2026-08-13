@@ -1,12 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Agent } from '@/types/events';
 import { useState } from 'react';
+import type { Agent } from '@/types/events';
 
 export function AgentsPanel({ agents }: { agents: Agent[] }) {
   const [selected, setSelected] = useState<string | null>(null);
-  const selectedAgent = selected ? agents.find(a => a.id === selected) : null;
+  const selectedAgent = selected ? agents.find((a) => a.id === selected) : null;
 
   return (
     <div className="h-full">
@@ -34,11 +34,7 @@ export function AgentsPanel({ agents }: { agents: Agent[] }) {
         ))}
       </div>
       {selectedAgent && (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-3 rounded-lg border border-command-border bg-command-elevated/70 p-3"
-        >
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-3 rounded-lg border border-command-border bg-command-elevated/70 p-3">
           <div className="text-[11px] font-semibold text-command-text">{selectedAgent.name}</div>
           <div className="mt-2 space-y-1 text-[11px] text-command-muted">
             <div>Status: {selectedAgent.status}</div>

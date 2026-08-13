@@ -4,31 +4,21 @@ import dynamic from 'next/dynamic';
 import { AppShell } from '@/components/layout/AppShell';
 import { useMockStream } from '@/hooks/useMockStream';
 
-const ExecutionGraph = dynamic(() => import('@/components/graph/ExecutionGraph').then(mod => ({ default: mod.ExecutionGraph })), { ssr: false });
+const ExecutiveDashboard = dynamic(() => import('@/components/dashboard/ExecutiveDashboard').then(mod => ({ default: mod.ExecutiveDashboard })), { ssr: false });
+const TaskBoard = dynamic(() => import('@/components/tasks/TaskBoard').then(mod => ({ default: mod.TaskBoard })), { ssr: false });
 const EventStream = dynamic(() => import('@/components/event-stream/EventStream').then(mod => ({ default: mod.EventStream })), { ssr: false });
-const AgentsPanel = dynamic(() => import('@/components/agents/AgentsPanel').then(mod => ({ default: mod.AgentsPanel })), { ssr: false });
-const MissionView = dynamic(() => import('@/components/mission/MissionView').then(mod => ({ default: mod.MissionView })), { ssr: false });
-const SkillsPanel = dynamic(() => import('@/components/skills/SkillsPanel').then(mod => ({ default: mod.SkillsPanel })), { ssr: false });
-const ToolsPanel = dynamic(() => import('@/components/tools/ToolsPanel').then(mod => ({ default: mod.ToolsPanel })), { ssr: false });
-const ApprovalPanel = dynamic(() => import('@/components/approval/ApprovalPanel').then(mod => ({ default: mod.ApprovalPanel })), { ssr: false });
+const SideNav = dynamic(() => import('@/components/navigation/SideNav').then(mod => ({ default: mod.SideNav })), { ssr: false });
 
 export default function Page() {
-  const { mission: currentMission, events, agents, skills, tools, approvals } = useMockStream();
+  const { kpis, mission, approvals, tasks, categories, events } = useMockStream();
 
   return (
     <AppShell
+      nav={<SideNav />}
       topBar={<TopBar />}
-      left={<AgentsPanel agents={agents} />}
-      center={<ExecutionGraph />}
-      right={<MissionView mission={currentMission} />}
-      bottom={
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
-          <EventStream events={events} />
-          <SkillsPanel skills={skills} />
-          <ToolsPanel tools={tools} />
-          <ApprovalPanel approvals={approvals} />
-        </div>
-      }
+      dashboard={<ExecutiveDashboard kpis={kpis} mission={mission} approvals={approvals} />}
+      main={<TaskBoard tasks={tasks} categories={categories} />}
+      bottom={<EventStream events={events} />}
     />
   );
 }
@@ -38,29 +28,17 @@ function TopBar() {
     <div className="flex items-center justify-between px-4">
       <div className="flex items-center gap-2">
         <span className="text-command-text font-semibold tracking-tight">⚕ HERMES</span>
-        <StatusPill label="SYSTEM ONLINE" tone="success" />
+        <span className="inline-flex items-center gap-1 rounded-full border border-command-success/20 bg-command-success/10 px-2 py-1 text-[10px] font-mono text-command-success">
+          <span className="inline-flex h-1.5 w-1.5 rounded-full bg-current" />
+          SYSTEM ONLINE
+        </span>
       </div>
       <nav className="hidden md:flex items-center gap-4 text-xs text-command-muted">
+        <button className="hover:text-command-text">MISSIONS</button>
+        <button className="hover:text-command-text">TASKS</button>
+        <button className="hover:text-command-text">PROJECTS</button>
         <button className="hover:text-command-text">AGENTS</button>
-        <button className="hover:text-command-text">SKILLS</button>
-        <button className="hover:text-command-text">TOOLS</button>
-        <button className="hover:text-command-text">MISSION</button>
       </nav>
     </div>
-  );
-}
-
-function StatusPill({ label, tone }: { label: string; tone: 'success' | 'warning' | 'danger' | 'neutral' }) {
-  const tones: Record<string, string> = {
-    success: 'bg-command-success/10 text-command-success border-command-success/20',
-    warning: 'bg-command-warning/10 text-command-warning border-command-warning/20',
-    danger: 'bg-command-danger/10 text-command-danger border-command-danger/20',
-    neutral: 'bg-white/5 text-command-muted border-white/10',
-  };
-  return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-mono ${tones[tone]}`}>
-      <span className="inline-flex h-1.5 w-1.5 rounded-full bg-current" />
-      {label}
-    </span>
   );
 }
