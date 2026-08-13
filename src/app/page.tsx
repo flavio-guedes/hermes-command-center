@@ -4,28 +4,30 @@ import dynamic from 'next/dynamic';
 import { AppShell } from '@/components/layout/AppShell';
 import { useMockStream } from '@/hooks/useMockStream';
 import { HeroSection } from '@/components/dashboard/HeroSection';
+import { DashboardViews } from '@/components/tasks/views/DashboardViews';
 
 const ExecutiveDashboard = dynamic(() => import('@/components/dashboard/ExecutiveDashboard').then(mod => ({ default: mod.ExecutiveDashboard })), { ssr: false });
-const TaskBoard = dynamic(() => import('@/components/tasks/TaskBoard').then(mod => ({ default: mod.TaskBoard })), { ssr: false });
-const EventStream = dynamic(() => import('@/components/event-stream/EventStream').then(mod => ({ default: mod.EventStream })), { ssr: false });
 const SideNav = dynamic(() => import('@/components/navigation/SideNav').then(mod => ({ default: mod.SideNav })), { ssr: false });
+const EventStream = dynamic(() => import('@/components/event-stream/EventStream').then(mod => ({ default: mod.EventStream })), { ssr: false });
 
 export default function Page() {
   const { kpis, mission, approvals, tasks, categories, events } = useMockStream();
 
   return (
-    <AppShell
-      nav={<SideNav />}
-      topBar={<TopBar />}
-      dashboard={
-        <div className="space-y-4">
-          <HeroSection />
-          <ExecutiveDashboard kpis={kpis} mission={mission} approvals={approvals} />
-        </div>
-      }
-      main={<TaskBoard tasks={tasks} categories={categories} />}
-      bottom={<EventStream events={events} />}
-    />
+    <div className="mx-auto w-full max-w-[1920px]">
+      <AppShell
+        nav={<SideNav />}
+        topBar={<TopBar />}
+        dashboard={
+          <div className="space-y-4">
+            <HeroSection />
+            <ExecutiveDashboard kpis={kpis} mission={mission} approvals={approvals} />
+          </div>
+        }
+        main={<DashboardViews tasks={tasks} categories={categories} events={events} />}
+        bottom={<EventStream events={events} />}
+      />
+    </div>
   );
 }
 

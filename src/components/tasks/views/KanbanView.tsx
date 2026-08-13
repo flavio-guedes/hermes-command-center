@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import type { Task, Category } from '@/types/events';
-import { TaskCard } from './TaskCard';
-import { TaskDetailDrawer } from './TaskDetailDrawer';
+import { TaskCard } from '../TaskCard';
+import { TaskDetailDrawer } from '../TaskDetailDrawer';
 
 const columns = [
   { id: 'BACKLOG', label: 'ACÚMULO DE TRABALHO' },
@@ -14,12 +14,11 @@ const columns = [
   { id: 'DONE', label: 'FEITO' },
 ];
 
-export function TaskBoard({ tasks, categories }: { tasks: Task[]; categories: Category[] }) {
+export function KanbanView({ tasks, categories }: { tasks: Task[]; categories: Category[] }) {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string>('ALL');
 
-  const filtered =
-    categoryFilter === 'ALL' ? tasks : tasks.filter((t) => t.category === categoryFilter);
+  const filtered = categoryFilter === 'ALL' ? tasks : tasks.filter((t) => t.category === categoryFilter);
   const grouped = columns.reduce<Record<string, Task[]>>((acc, col) => ({ ...acc, [col.id]: [] }), {});
   for (const col of columns) {
     grouped[col.id] = filtered

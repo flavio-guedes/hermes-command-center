@@ -90,12 +90,24 @@ export interface Task {
   priority: Priority;
   createdAt: string;
   updatedAt: string;
+  startDate?: string;
+  dueDate?: string;
+  progress?: number;
   duration?: string;
   blocker?: string;
   nextAction?: string;
   toolsUsed?: string[];
   result?: string;
   events?: string[];
+}
+
+export interface TaskFilters {
+  search: string;
+  status: string;
+  assignee: string;
+  priority: string;
+  project: string;
+  category: string;
 }
 
 export interface KPIs {
